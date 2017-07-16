@@ -54,13 +54,11 @@ int main(int argc, char *argv[]) {
 		fprintf ( stderr, "Usage : %s <midi_device>\n", argv[0] );
 		return 1;
 	}
-	if ((fp=fopen(argv[1],"r"))==NULL)
-	{
+	if ((fp=fopen(argv[1],"r"))==NULL) {
 		perror(argv[1]);
 		exit (1);
 	}
-	while (!feof(fp))
-	{
+	while (!feof(fp)) {
 		c=fgetc(fp);
 		buffer=c;
 		MIDI_Event();
