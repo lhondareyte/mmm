@@ -17,5 +17,5 @@ clean:
 	@echo "done."
 install:
 	@printf "Installation..."
-	@instal -m 755 $(PRG) /usr/local/bin
+	@install -m 755 $(PRG) /usr/local/bin
 	@echo "done."
