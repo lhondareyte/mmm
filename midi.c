@@ -11,7 +11,7 @@
 #include "midi.h"
 
 #ifndef __AVR__
-void MIDI_Event()
+void MIDI_Event(void)
 #else
 
 #include "io.h"
@@ -22,10 +22,8 @@ ISR (UART_RECEIV_VECT)
 	#if defined (__AVR__)
 	buffer=UART_RX_BUF;
 	#endif
-	// Traitement Status Byte
 	if (bit_is_set(buffer,7))
 	{
-		// ready=FALSE;
 		// Channel messages
 		if (buffer < MIDI_SYSEX_MSG) 
 		{
@@ -41,14 +39,14 @@ ISR (UART_RECEIV_VECT)
 			{
 			case MIDI_SYSEX_MSG:
 				#ifndef __AVR__
-			     	fprintf (stdout, "SYSEX message start\n");
+			     	fprintf (stdout, "SYSEX Start\n");
 				#endif
 				next=MIDI_SYSEX_MSG;
 				break;
 
 			case MIDI_EOX_MSG:
 				#ifndef __AVR__
-			     	fprintf (stdout, "SYSEX message end\n");
+			     	fprintf (stdout, "SYSEX End\n");
 				#endif
 				next=MIDI_UNKNOW_MSG;
 				ready=TRUE;
@@ -79,7 +77,7 @@ ISR (UART_RECEIV_VECT)
 			// System Real time messages
 			case MIDI_RESET_MSG : 
 				#ifndef __AVR__
-			     	fprintf (stdout, "Message RESET\n");
+			     	fprintf (stdout, "RESET\n");
 				#endif
 				#if defined ( __MIDI_RESET_ENABLE__ )
 				exit (0);
@@ -88,8 +86,8 @@ ISR (UART_RECEIV_VECT)
 
 			default:
 				#ifndef __AVR__
-			     	//printf (stdout, "Message temps rÃ©el: 0x%2x - Status= 0x%2x, DATA1= 0x%2x, DATA2= 0x%2x\n", 
-			//			buffer, status, data1, data2);
+			     	fprintf (stdout, "Real Time Message - Status= 0x%2x, DATA1= 0x%2x, DATA2= 0x%2x\n", 
+					 status, data1, data2);
 				#endif
 				break;
 			}
@@ -111,19 +109,19 @@ ISR (UART_RECEIV_VECT)
 					switch (status)
 					{
 						case MIDI_PROGCH_MSG:
-							fprintf(stdout, "Message PC: 0x%2x\n", data1);
+							fprintf(stdout, "Program Change: 0x%2x\n", data1);
 							break;
 
 						case MIDI_CHANAF_MSG:
-							fprintf(stdout, "Message Channel AF: 0x%2x\n", data1);
+							fprintf(stdout, "Channel AfterTouch: 0x%2x\n", data1);
 							break;
 
 						case MIDI_QUARTER_MSG:
-							fprintf(stdout, "Message QT Frame: 0x%2x\n", data1);
+							fprintf(stdout, "QT Frame: 0x%2x\n", data1);
 							break;
 
 						case MIDI_SONGSEL_MSG:
-							fprintf(stdout, "Message Song Select: 0x%2x\n", data1);
+							fprintf(stdout, "Song Select: 0x%2x\n", data1);
 							break;
 					}
 					#endif
@@ -137,7 +135,7 @@ ISR (UART_RECEIV_VECT)
 				{
 					case MIDI_NOTEON_MSG : 
 						#ifndef __AVR__
-						fprintf(stdout, "Message Note ON note: 0x%2x velo: 0x%2x",
+						fprintf(stdout, "Note ON - note: 0x%2x  - velocity: 0x%2x",
 									data1, data2);
 						#endif
 						if (data2==0) 
@@ -154,40 +152,38 @@ ISR (UART_RECEIV_VECT)
 
 					case MIDI_NOTOFF_MSG : 
 						#ifndef __AVR__
-						fprintf(stdout, "Message Note OFF note: 0x%2x velo: 0x%2x\n", 
-									data1, data2);
+						fprintf(stdout, "Note OFF - note: 0x%2x\n", data1);
 						#endif
 						break;
 
 					case MIDI_POLYAF_MSG : 
 						#ifndef __AVR__
-						fprintf(stdout, "Message Pol. AF note: 0x%2x velo: 0x%2x\n", 
+						fprintf(stdout, "Polyphonic AfterTouch - note: 0x%2x velo: 0x%2x\n", 
 									data1, data2);
 						#endif
 						break;
 
 					case MIDI_CTRLCH_MSG : 
 						#ifndef __AVR__
-						fprintf(stdout, "Message CC: 0x%2x + 0x%2x\n", 
+						fprintf(stdout, "Control Change: 0x%2x + 0x%2x\n", 
 									data1, data2);
 						#endif
 						break;
 
 					case MIDI_PITCHB_MSG : 
 						#ifndef __AVR__
-						fprintf(stdout, "Message Pitch Bend: 0x%2x + 0x%2x\n", 
+						fprintf(stdout, "Pitch Bend: 0x%2x + 0x%2x\n", 
 									data1, data2);
 						#endif
 						break;
 
 					case MIDI_SONGPOS_MSG :
 						#ifndef __AVR__
-						fprintf(stdout, "Message Song Position: 0x%2x + 0x%2x\n", 
+						fprintf(stdout, "Song Position: 0x%2x + 0x%2x\n", 
 									data1, data2); 
 						#endif
 						break;
 
-					// Arrivé ici, on a une c. dans le potage!
 					default: 
 						#ifndef __AVR__
 						fprintf (stdout, "Message PANIC MIDI!!\n");
@@ -211,7 +207,7 @@ ISR (UART_RECEIV_VECT)
 				next=MIDI_SYSEX_MSG;
 				break;
 
-			// Gestion du running status
+			// About running status
 			case MIDI_UNKNOW_MSG :
 				if (status == MIDI_PROGCH_MSG || status == MIDI_CHANAF_MSG || 
 					status == MIDI_QUARTER_MSG || status == MIDI_SONGSEL_MSG )
@@ -227,7 +223,7 @@ ISR (UART_RECEIV_VECT)
 							break;
 	
 						case MIDI_CHANAF_MSG : 
-							fprintf(stdout, "Message Canal AF: 0x%2x\n", data1);
+							fprintf(stdout, "Canal AfterTouch: 0x%2x\n", data1);
 							break;
 					}
 				#endif
@@ -261,12 +257,10 @@ ISR (UART_RECEIV_VECT)
 				break;
 		}
 	}
-	//buffer=0;
 }
 
 void MIDI_Ack (void)
 {
-//	status=MIDI_UNKNOW_MSG;  // Incompatible avec le running status
 	next=MIDI_UNKNOW_MSG;
 	ready=FALSE;
 }
