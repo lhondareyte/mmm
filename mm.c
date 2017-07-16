@@ -5,15 +5,6 @@
 #include "midi.h"
 
 
-/*
- *  Librairie MIDI pour AVR
- *
- *  $Id: MIDI_Event.c,v 0.5 2011/01/21 08:35:37 luc Exp luc $
- *
- *  (c)2011 - Luc HONDAREYTE <luc.hondareyte@laposte.net>
- *
- */
-
 #ifdef __AVR__
  #include "io.h"
 #endif
@@ -30,6 +21,10 @@ int main(int argc, char *argv[]) {
 
 	FILE *fp;
 	uint8_t c;
+	if ( argc != 2 ) {
+		fprintf ( stderr, "Usage : %s <midi_device>\n", argv[0] );
+		return 1;
+	}
 	if ((fp=fopen(argv[1],"r"))==NULL)
 	{
 		perror(argv[1]);
