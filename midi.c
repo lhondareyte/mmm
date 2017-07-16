@@ -49,21 +49,17 @@ ISR (UART_RECEIV_VECT)
 	#if defined (__AVR__)
 	buffer=UART_RX_BUF;
 	#endif
-	if (bit_is_set(buffer,7))
-	{
+	if (bit_is_set(buffer,7)) {
 		// Channel messages
-		if (buffer < MIDI_SYSEX_MSG) 
-		{
+		if (buffer < MIDI_SYSEX_MSG) {
 			status=(buffer&0xF0);
 			channel=(buffer&0x0F);
 			next=MIDI_DATA1;
 		}
 		// System Common messages
-		else if ( buffer < MIDI_TIMECL_MSG )
-		{
+		else if ( buffer < MIDI_TIMECL_MSG ) {
 			status=buffer;
-			switch (buffer)
-			{
+			switch (buffer) {
 			case MIDI_SYSEX_MSG:
 				#ifndef __AVR__
 			     	fprintf (stdout, "SYSEX Start\n");
@@ -97,9 +93,8 @@ ISR (UART_RECEIV_VECT)
 			}
 		}
 		// System RealTime messages
-		else
-		{	switch (buffer)
-			{
+		else {	
+			switch (buffer) {
 		
 			// System Real time messages
 			case MIDI_RESET_MSG : 
@@ -121,20 +116,16 @@ ISR (UART_RECEIV_VECT)
 		}
 	}
 	// Traitement des DATA Bytes
-	else
-	{
-		switch (next)
-		{
+	else {
+		switch (next) {
 			case MIDI_DATA1: 
 				data1=buffer;
 				if (status == MIDI_PROGCH_MSG || status == MIDI_CHANAF_MSG || 
-					status == MIDI_QUARTER_MSG || status == MIDI_SONGSEL_MSG )
-				{
+					status == MIDI_QUARTER_MSG || status == MIDI_SONGSEL_MSG ) {
 					next=MIDI_UNKNOW_MSG;
 					ready=TRUE;
 					#ifndef __AVR__
-					switch (status)
-					{
+					switch (status) {
 						case MIDI_PROGCH_MSG:
 							fprintf(stdout, "Program Change: 0x%2x\n", data1);
 							break;
@@ -158,8 +149,7 @@ ISR (UART_RECEIV_VECT)
 						
 			case MIDI_DATA2: 
 				data2=buffer;
-				switch (status)
-				{
+				switch (status) {
 					case MIDI_NOTEON_MSG : 
 						#ifndef __AVR__
 						fprintf(stdout, "Note ON - note: 0x%2x  - velocity: 0x%2x",
@@ -237,15 +227,13 @@ ISR (UART_RECEIV_VECT)
 			// About running status
 			case MIDI_UNKNOW_MSG :
 				if (status == MIDI_PROGCH_MSG || status == MIDI_CHANAF_MSG || 
-					status == MIDI_QUARTER_MSG || status == MIDI_SONGSEL_MSG )
-				{
+					status == MIDI_QUARTER_MSG || status == MIDI_SONGSEL_MSG ) {
 					data1=buffer;
 					ready=TRUE;
 					next=MIDI_UNKNOW_MSG;
 				#ifndef __AVR__
 					fprintf(stdout, "(Running status On) - 1 \n");
-					switch (status)
-					{
+					switch (status) {
 						case MIDI_PROGCH_MSG : 
 							break;
 	
@@ -255,8 +243,7 @@ ISR (UART_RECEIV_VECT)
 					}
 				#endif
 				}
-				else if (status < MIDI_SYSEX_MSG)
-				{
+				else if (status < MIDI_SYSEX_MSG) {
 					data1=buffer;
 					next=MIDI_DATA2;
 				#ifndef __AVR__
@@ -264,8 +251,7 @@ ISR (UART_RECEIV_VECT)
 							status, data1, data2);
 				#endif
 				}
-				else 
-				{
+				else {
 					status=MIDI_UNKNOW_MSG;
 					next=MIDI_UNKNOW_MSG;
 				}
@@ -286,20 +272,3 @@ ISR (UART_RECEIV_VECT)
 	}
 }
 
-void MIDI_Ack (void)
-{
-	next=MIDI_UNKNOW_MSG;
-	ready=FALSE;
-}
-
-uint8_t MIDI_MsgReady(void)
-{
- 	return (ready);
-}
-
-void MIDI_Init(void)
-{
-	status=MIDI_UNKNOW_MSG;
-	channel=0;
-	buffer=0;
-}

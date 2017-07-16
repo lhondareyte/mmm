@@ -117,13 +117,6 @@ uint8_t activechannel;		// Canal MIDI actif
 
 #endif
 
-/*
- * Pseudo fonctions 
- */
- 
 #define	MIDI_SetRcvChannel(c)	activechannel=c
-void	MIDI_Ack( void );
-void	MIDI_Init( void );
-uint8_t	MIDI_MsgReady( void );
 
 #endif /* __AVR_MIDI_H__ */
