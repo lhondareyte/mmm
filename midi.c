@@ -1,5 +1,5 @@
 /*
- *   Copyright (c)2014-2017,  Luc Hondareyte <lhondareyte_AT_laposte.net>.
+ *   Copyright (c)2014-2017,  Luc Hondareyte
  *   All rights reserved.
  *     
  *   Redistribution and use in source and binary forms, with or without 
@@ -27,9 +27,8 @@
  * 
  */
 /*
- * SYNTH PUNK CONSOLE Mark II
- * 
- * Copyright (c) 2010-2011 Luc Hondareyte <luc.hondareyte_AT_laposte.net>
+ * From SYNTH PUNK CONSOLE Mark II
+ * Copyright (c) 2010-2011 Luc Hondareyte
  *
  * $Id: midi.c,v 0.4 2011/03/11 10:12:06 luc Exp luc $
  */
@@ -108,7 +107,7 @@ ISR (UART_RECEIV_VECT)
 
 			default:
 				#ifndef __AVR__
-			     	fprintf (stdout, "Real Time Message - Status= 0x%2x, DATA1= 0x%2x, DATA2= 0x%2x\n", 
+			     	fprintf (stdout, "Real Time Message - Status= 0x%02x, DATA1= 0x%02x, DATA2= 0x%02x\n", 
 					 status, data1, data2);
 				#endif
 				break;
@@ -127,19 +126,19 @@ ISR (UART_RECEIV_VECT)
 					#ifndef __AVR__
 					switch (status) {
 						case MIDI_PROGCH_MSG:
-							fprintf(stdout, "Program Change: 0x%2x\n", data1);
+							fprintf(stdout, "Program Change: 0x%02x\n", data1);
 							break;
 
 						case MIDI_CHANAF_MSG:
-							fprintf(stdout, "Channel AfterTouch: 0x%2x\n", data1);
+							fprintf(stdout, "Channel AfterTouch: 0x%02x\n", data1);
 							break;
 
 						case MIDI_QUARTER_MSG:
-							fprintf(stdout, "QT Frame: 0x%2x\n", data1);
+							fprintf(stdout, "QT Frame: 0x%02x\n", data1);
 							break;
 
 						case MIDI_SONGSEL_MSG:
-							fprintf(stdout, "Song Select: 0x%2x\n", data1);
+							fprintf(stdout, "Song Select: 0x%02x\n", data1);
 							break;
 					}
 					#endif
@@ -152,7 +151,7 @@ ISR (UART_RECEIV_VECT)
 				switch (status) {
 					case MIDI_NOTEON_MSG : 
 						#ifndef __AVR__
-						fprintf(stdout, "Note ON - note: 0x%2x  - velocity: 0x%2x",
+						fprintf(stdout, "Note ON   note: 0x%02x + 0x%02x",
 									data1, data2);
 						#endif
 						if (data2==0) 
@@ -169,34 +168,34 @@ ISR (UART_RECEIV_VECT)
 
 					case MIDI_NOTOFF_MSG : 
 						#ifndef __AVR__
-						fprintf(stdout, "Note OFF - note: 0x%2x\n", data1);
+						fprintf(stdout, "Note OFF   note: 0x%02x\n", data1);
 						#endif
 						break;
 
 					case MIDI_POLYAF_MSG : 
 						#ifndef __AVR__
-						fprintf(stdout, "Polyphonic AfterTouch - note: 0x%2x velo: 0x%2x\n", 
+						fprintf(stdout, "Poly. AT   note: 0x%02x velo: 0x%02x\n", 
 									data1, data2);
 						#endif
 						break;
 
 					case MIDI_CTRLCH_MSG : 
 						#ifndef __AVR__
-						fprintf(stdout, "Control Change: 0x%2x + 0x%2x\n", 
+						fprintf(stdout, "Control Change: 0x%02x + 0x%02x\n", 
 									data1, data2);
 						#endif
 						break;
 
 					case MIDI_PITCHB_MSG : 
 						#ifndef __AVR__
-						fprintf(stdout, "Pitch Bend: 0x%2x + 0x%2x\n", 
+						fprintf(stdout, "Pitch Bend: 0x%02x + 0x%02x\n", 
 									data1, data2);
 						#endif
 						break;
 
 					case MIDI_SONGPOS_MSG :
 						#ifndef __AVR__
-						fprintf(stdout, "Song Position: 0x%2x + 0x%2x\n", 
+						fprintf(stdout, "Song Position: 0x%02x + 0x%02x\n", 
 									data1, data2); 
 						#endif
 						break;
@@ -238,7 +237,7 @@ ISR (UART_RECEIV_VECT)
 							break;
 	
 						case MIDI_CHANAF_MSG : 
-							fprintf(stdout, "Canal AfterTouch: 0x%2x\n", data1);
+							fprintf(stdout, "Canal AfterTouch: 0x%02x\n", data1);
 							break;
 					}
 				#endif
@@ -247,7 +246,7 @@ ISR (UART_RECEIV_VECT)
 					data1=buffer;
 					next=MIDI_DATA2;
 				#ifndef __AVR__
-					fprintf(stdout, "Running status - Status= 0x%2x, DATA1= 0x%2x, DATA2= 0x%2x\n", 
+					fprintf(stdout, "Running status - Status= 0x%02x, DATA1= 0x%02x, DATA2= 0x%02x\n", 
 							status, data1, data2);
 				#endif
 				}

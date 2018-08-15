@@ -1,5 +1,5 @@
 /*
- *   Copyright (c)2014-2017,  Luc Hondareyte <lhondareyte_AT_laposte.net>.
+ *   Copyright (c)2014-2017,  Luc Hondareyte 
  *   All rights reserved.
  *     
  *   Redistribution and use in source and binary forms, with or without 
@@ -30,7 +30,7 @@
  *  From Librairie MIDI pour AVR
  *  $Id: midi.h,v 1.7 2011/03/11 10:10:32 luc Exp luc $
  *
- *  (c)2011 - Luc HONDAREYTE <luc.hondareyte_AT_laposte.net>
+ *  (c)2011 - Luc HONDAREYTE 
  */
 #include <stdint.h>
  

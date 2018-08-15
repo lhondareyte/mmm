@@ -1,5 +1,5 @@
 /*
- *   Copyright (c)2014-2017,  Luc Hondareyte <lhondareyte_AT_laposte.net>.
+ *   Copyright (c)2014-2017,  Luc Hondareyte
  *   All rights reserved.
  *     
  *   Redistribution and use in source and binary forms, with or without 
@@ -31,6 +31,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdint.h>
+#include <time.h>
+#include <sys/time.h>
 #include "midi.h"
 
 
@@ -45,6 +47,20 @@
 #ifndef bit_is_set
  #define bit_is_set(var,pos) ((var) & (1<<(pos)))
 #endif
+
+        
+char            t_fmt[64], t_buf[64];
+struct timeval  tv;
+struct tm       *tm;
+
+void get_time(void) {
+	gettimeofday(&tv, NULL);
+	if((tm = localtime(&tv.tv_sec)) != NULL)
+	{
+		strftime(t_fmt, sizeof t_fmt, "%Y-%m-%d , %H:%M:%S ,", tm);
+		snprintf(t_buf, sizeof t_buf, t_fmt, tv.tv_usec);
+	}
+}
 
 int main(int argc, char *argv[]) {
 
