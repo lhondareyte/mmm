@@ -1,4 +1,4 @@
-PRG=mm
+PRG=mmm
 CFLAGS= -D __MIDI_RESET_ENABLE__
 SRCS=mm.c midi.c
 OBJS=mm.o midi.o
