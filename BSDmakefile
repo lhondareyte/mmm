@@ -1,4 +1,4 @@
-PROG	=	mm
+PROG	=	mmm
 SRCS	!=	ls *c
 CFLAGS	+=	-D __MIDI_RESET_ENABLE__
 
