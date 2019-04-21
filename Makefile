@@ -16,4 +16,5 @@ clean:
 	@rm -f *.o $(PRG) *~
 
 install:
+	mkdir -p $(PREFIX)/bin
 	install -m 555 -o root -g wheel $(PRG) $(PREFIX)/bin
