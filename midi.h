@@ -34,8 +34,8 @@
  */
 #include <stdint.h>
  
-#ifndef __AVR_MIDI_H__
- #define __AVR_MIDI_H__
+#ifndef __MIDI_H__
+ #define __MIDI_H__
 
 #ifndef FALSE
  #define FALSE          0
@@ -119,4 +119,4 @@ uint8_t activechannel;		// Canal MIDI actif
 
 #define	MIDI_SetRcvChannel(c)	activechannel=c
 
-#endif /* __AVR_MIDI_H__ */
+#endif /* __MIDI_H__ */

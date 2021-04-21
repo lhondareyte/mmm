@@ -33,16 +33,14 @@
 #include <stdint.h>
 #include <time.h>
 #include <sys/time.h>
-#include "midi.h"
 
 
 #ifdef __AVR__
  #include "io.h"
 #endif
 
-#ifndef __AVR_MIDI_H__
- #include "midi.h"
-#endif
+extern void MIDI_Event(void);
+extern volatile uint8_t buffer;
 
 #ifndef bit_is_set
  #define bit_is_set(var,pos) ((var) & (1<<(pos)))
