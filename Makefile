@@ -1,9 +1,8 @@
 PRG    =  mmm
-CFLAGS =  -D __MIDI_RESET_ENABLE__
+CFLAGS =  -D __MIDI_RESET_ENABLE__ -Werror
 SRCS   =  mm.c midi.c
 OBJS   =  mm.o midi.o
-PREFIX ?= /usr/local
-
+BINDIR = $(DESTDIR)$(PREFIX)/bin
 all: $(PRG)
 
 .c.o:
@@ -16,5 +15,4 @@ clean:
 	@rm -f *.o $(PRG) *~
 
 install:
-	mkdir -p $(PREFIX)/bin
-	install -m 555 -o root -g wheel $(PRG) $(PREFIX)/bin
+	install -s -m 755  $(PRG) $(BINDIR)
